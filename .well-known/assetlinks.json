@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.yurisilva90.twa",
+      "sha256_cert_fingerprints": [
+        "6D:28:2D:8B:6F:5C:E7:9E:A5:19:29:DE:56:52:75:00:C5:9C:D8:33:6C:C1:9F:C2:BF:2E:0F:D4:5E:B1:5F:96"
+      ]
+    }
+  }
+]
