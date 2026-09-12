@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#f6f6f8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Calendário" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <title>Calendário</title>
+  <style>
+    :root{color-scheme:light;--bg:#f6f6f8;--card:rgba(255,255,255,.84);--text:#151518;--muted:#85858c;--line:#e6e6ea;--accent:#0a84ff;--today:#ff3b30}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;min-height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;color:var(--text)}
+    body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);min-height:100dvh}
+    button{font:inherit}
+    .app{max-width:520px;margin:0 auto;min-height:100dvh;padding:18px 16px 120px}
+    .topbar{display:flex;align-items:flex-start;justify-content:space-between;margin:6px 2px 18px}
+    .eyebrow{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.02em}
+    h1{font-size:32px;line-height:1.02;margin:4px 0 0;letter-spacing:-.04em}
+    .todayBtn{border:0;background:white;border-radius:999px;padding:9px 13px;color:var(--accent);font-weight:650;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+    .calendar{background:var(--card);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.7);border-radius:28px;padding:18px 14px 16px;box-shadow:0 16px 45px rgba(0,0,0,.07)}
+    .monthhead{display:flex;align-items:center;justify-content:space-between;padding:0 4px 14px}
+    .monthtitle{font-size:21px;font-weight:760;letter-spacing:-.02em;text-transform:capitalize}
+    .nav{display:flex;gap:8px}
+    .iconBtn{width:36px;height:36px;border:0;border-radius:50%;background:#f0f0f3;color:#444;font-size:22px;display:grid;place-items:center;line-height:1}
+    .week,.grid{display:grid;grid-template-columns:repeat(7,1fr)}
+    .week{padding:0 2px 7px}.week div{text-align:center;color:#9a9aa1;font-size:11px;font-weight:700;text-transform:uppercase}
+    .day{position:relative;aspect-ratio:1/1;display:grid;place-items:center;border:0;background:transparent;border-radius:50%;font-size:16px;color:var(--text)}
+    .day.out{color:#c6c6ca}.day.today{color:white;background:var(--today);font-weight:760}.day.selected:not(.today){background:#111;color:white;font-weight:700}
+    .day.has-event::after{content:"";position:absolute;bottom:5px;width:4px;height:4px;border-radius:50%;background:var(--accent)}
+    .day.today.has-event::after,.day.selected.has-event::after{background:white}
+    .section{margin-top:24px}
+    .sectionTitle{display:flex;align-items:end;justify-content:space-between;padding:0 4px 10px}
+    .sectionTitle h2{font-size:22px;margin:0;letter-spacing:-.03em}.sectionTitle span{font-size:13px;color:var(--muted);text-transform:capitalize}
+    .agenda{display:flex;flex-direction:column;gap:10px}
+    .event{background:white;border-radius:20px;padding:15px 16px;display:flex;gap:13px;align-items:center;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+    .time{min-width:54px}.time strong{display:block;font-size:15px}.time small{display:block;color:var(--muted);margin-top:2px}
+    .bar{width:4px;align-self:stretch;min-height:42px;border-radius:99px;background:var(--accent)}
+    .eventInfo{min-width:0}.eventInfo strong{display:block;font-size:16px}.eventInfo span{display:block;color:var(--muted);font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .empty{background:white;border-radius:20px;padding:22px;text-align:center;color:var(--muted)}
+    .fab{position:fixed;right:max(22px,calc((100vw - 520px)/2 + 22px));bottom:calc(26px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:50%;border:0;background:#111;color:white;font-size:32px;line-height:1;box-shadow:0 10px 26px rgba(0,0,0,.2)}
+    .sheet{position:fixed;inset:0;display:none;align-items:flex-end;background:rgba(0,0,0,.25);z-index:10}.sheet.open{display:flex}
+    .panel{width:100%;max-width:520px;margin:0 auto;background:#f8f8fa;border-radius:28px 28px 0 0;padding:12px 18px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -18px 50px rgba(0,0,0,.15)}
+    .grab{width:42px;height:5px;border-radius:20px;background:#d4d4d8;margin:0 auto 18px}.panel h3{font-size:22px;margin:0 0 16px}.field{background:white;border-radius:16px;padding:12px 14px;margin-bottom:10px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}.field input{width:100%;border:0;outline:0;font-size:16px;background:transparent;color:var(--text)}
+    .save{width:100%;border:0;border-radius:16px;background:var(--accent);color:white;font-weight:700;font-size:16px;padding:14px;margin-top:4px}
+    @media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0d0d0f;--card:rgba(28,28,30,.86);--text:#f7f7f8;--muted:#98989f;--line:#2d2d31}.todayBtn,.event,.empty,.field{background:#1c1c1e}.iconBtn{background:#2c2c2e;color:#eee}.fab{background:white;color:#111}.panel{background:#151517}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="topbar">
+      <div><div class="eyebrow" id="weekdayLabel">HOJE</div><h1>Calendário</h1></div>
+      <button class="todayBtn" id="goToday">Hoje</button>
+    </div>
+
+    <section class="calendar">
+      <div class="monthhead">
+        <div class="monthtitle" id="monthTitle"></div>
+        <div class="nav"><button class="iconBtn" id="prev" aria-label="Mês anterior">‹</button><button class="iconBtn" id="next" aria-label="Próximo mês">›</button></div>
+      </div>
+      <div class="week"><div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div></div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="section">
+      <div class="sectionTitle"><h2>Agenda</h2><span id="selectedLabel"></span></div>
+      <div class="agenda" id="agenda"></div>
+    </section>
+  </main>
+
+  <button class="fab" id="add" aria-label="Novo compromisso">+</button>
+
+  <div class="sheet" id="sheet">
+    <div class="panel">
+      <div class="grab"></div>
+      <h3>Novo compromisso</h3>
+      <div class="field"><label>Título</label><input id="eventTitle" placeholder="Ex.: Reunião do projeto" /></div>
+      <div class="field"><label>Horário</label><input id="eventTime" type="time" value="09:00" /></div>
+      <button class="save" id="save">Adicionar à agenda</button>
+    </div>
+  </div>
+
+<script>
+const ptMonth=new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric'});
+const ptDay=new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'long'});
+const today=new Date();
+let view=new Date(today.getFullYear(),today.getMonth(),1);
+let selected=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+const key=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+let events=JSON.parse(localStorage.getItem('cal-events')||'{}');
+if(!Object.keys(events).length){events[key(today)]=[{time:'09:30',title:'Planejar o dia',place:'Prioridades e tarefas'},{time:'14:00',title:'Revisar projeto',place:'Protótipo no iPhone'}]}
+function same(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function render(){
+ document.getElementById('monthTitle').textContent=ptMonth.format(view);
+ document.getElementById('selectedLabel').textContent=ptDay.format(selected);
+ document.getElementById('weekdayLabel').textContent=today.toLocaleDateString('pt-BR',{weekday:'long'}).toUpperCase();
+ const grid=document.getElementById('grid');grid.innerHTML='';
+ const first=new Date(view.getFullYear(),view.getMonth(),1); const start=new Date(first);start.setDate(first.getDate()-first.getDay());
+ for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const b=document.createElement('button');b.className='day';b.textContent=d.getDate();if(d.getMonth()!==view.getMonth())b.classList.add('out');if(same(d,today))b.classList.add('today');if(same(d,selected))b.classList.add('selected');if(events[key(d)]?.length)b.classList.add('has-event');b.onclick=()=>{selected=d;view=new Date(d.getFullYear(),d.getMonth(),1);render()};grid.appendChild(b)}
+ const agenda=document.getElementById('agenda');agenda.innerHTML='';const list=events[key(selected)]||[];
+ if(!list.length){agenda.innerHTML='<div class="empty">Nenhum compromisso neste dia.</div>'}else list.sort((a,b)=>a.time.localeCompare(b.time)).forEach(e=>{const el=document.createElement('div');el.className='event';el.innerHTML=`<div class="time"><strong>${e.time}</strong><small>${e.time<'12:00'?'manhã':e.time<'18:00'?'tarde':'noite'}</small></div><div class="bar"></div><div class="eventInfo"><strong>${e.title}</strong><span>${e.place||'Compromisso'}</span></div>`;agenda.appendChild(el)})
+}
+document.getElementById('prev').onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};
+document.getElementById('next').onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
+document.getElementById('goToday').onclick=()=>{selected=new Date(today);view=new Date(today.getFullYear(),today.getMonth(),1);render()};
+const sheet=document.getElementById('sheet');document.getElementById('add').onclick=()=>sheet.classList.add('open');sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove('open')};
+document.getElementById('save').onclick=()=>{const title=document.getElementById('eventTitle').value.trim();const time=document.getElementById('eventTime').value||'09:00';if(!title)return;const k=key(selected);events[k]=events[k]||[];events[k].push({time,title,place:'Criado no iPhone'});localStorage.setItem('cal-events',JSON.stringify(events));document.getElementById('eventTitle').value='';sheet.classList.remove('open');render()};
+if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js');render();
+</script>
+</body>
+</html>
