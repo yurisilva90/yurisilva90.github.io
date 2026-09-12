@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="118" fill="#ffffff"/>
+  <rect x="0" y="0" width="512" height="150" rx="118" fill="#ff3b30"/>
+  <rect x="0" y="82" width="512" height="90" fill="#ff3b30"/>
+  <text x="256" y="112" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-size="58" font-weight="700" fill="#fff">SET</text>
+  <text x="256" y="364" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-size="220" font-weight="650" fill="#151518">12</text>
+</svg>
