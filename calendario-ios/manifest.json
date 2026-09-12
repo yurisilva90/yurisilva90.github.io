@@ -1,0 +1,17 @@
+{
+  "name": "Calendário iPhone",
+  "short_name": "Calendário",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f6f8",
+  "theme_color": "#f6f6f8",
+  "description": "Protótipo de calendário mobile para testes no iPhone",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
