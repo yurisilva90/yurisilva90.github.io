@@ -1,12 +1,18 @@
 {
-  "name": "Calendário iPhone",
-  "short_name": "Calendário",
+  "name": "IVia",
+  "short_name": "IVia",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#f6f6f8",
-  "theme_color": "#f6f6f8",
-  "description": "Protótipo de calendário mobile para testes no iPhone",
+  "theme_color": "#00D7F0",
+  "description": "IVia — 4 pilares da vida",
   "icons": [
+    {
+      "src": "./ivia-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "./icon.svg",
       "sizes": "any",
