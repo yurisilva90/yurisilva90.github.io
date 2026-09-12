@@ -1,7 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="118" fill="#ffffff"/>
-  <rect x="0" y="0" width="512" height="150" rx="118" fill="#ff3b30"/>
-  <rect x="0" y="82" width="512" height="90" fill="#ff3b30"/>
-  <text x="256" y="112" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-size="58" font-weight="700" fill="#fff">SET</text>
-  <text x="256" y="364" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,Arial,sans-serif" font-size="220" font-weight="650" fill="#151518">12</text>
+  <rect width="512" height="512" rx="112" fill="#ffffff"/>
+  <g fill="#00D7F0">
+    <circle cx="256" cy="112" r="48"/>
+    <path d="M112 150c18 68 72 120 144 143-41-58-70-116-78-170-31 7-54 16-66 27z"/>
+    <path d="M400 150c-18 68-72 120-144 143 41-58 70-116 78-170 31 7 54 16 66 27z"/>
+    <path d="M176 238c24 75 58 131 80 156 24-27 48-69 56-111-47 30-90 31-136-45z"/>
+    <path d="M336 238c-24 75-58 131-80 156-24-27-48-69-56-111 47 30 90 31 136-45z" opacity=".92"/>
+    <text x="256" y="462" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="700" letter-spacing="-5">IV<tspan font-weight="600">ia</tspan></text>
+  </g>
 </svg>
